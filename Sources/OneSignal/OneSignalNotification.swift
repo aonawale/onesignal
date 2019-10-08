@@ -35,6 +35,8 @@ public struct OneSignalNotification: Codable {
      Example: `["1dd608f2-c6a1-11e3-851d-000c2940e62c"]`
      */
     public var users: [String] = []
+
+    public var externalUsers: [String]?
     
     /**
      NOT RECOMMENDED - Please consider using include_player_ids instead.
@@ -157,7 +159,7 @@ public struct OneSignalNotification: Codable {
         self.users = users
     }
     
-    public init(title: String?, subtitle: String?, body: String, users: [String], deviceTokens: [String]? = nil, sound: String? = nil, category: String? = nil, sendAfter: String? = nil, additionalData: [String : String]? = nil, attachments: [String : String]? = nil) {
+    public init(title: String?, subtitle: String?, body: String, users: [String] = [], externalUsers: [String] = [], deviceTokens: [String]? = nil, sound: String? = nil, category: String? = nil, sendAfter: String? = nil, additionalData: [String : String]? = nil, attachments: [String : String]? = nil) {
         if let title = title { self.title = OneSignalMessage(title) }
         if let subtitle = subtitle { self.subtitle = OneSignalMessage(subtitle) }
         self.message = OneSignalMessage(body)
@@ -218,6 +220,7 @@ extension OneSignalNotification {
         let payload = OneSignalPayload(
             appId: app.appId,
             playerIds: self.users,
+            externalUserIds: self.externalUsers,
             iosDeviceTokens: self.deviceTokens,
             contents: self.message.messages,
             headings: self.title?.messages,
